@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:noteapp/controller/note_controller.dart';
+import 'package:provider/provider.dart';
 import 'pages/notes_page.dart'; // import your page
 
 void main() {
@@ -10,9 +12,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Note App',
-      home: NotesPage(),
+    return ChangeNotifierProvider(
+      create: (context) => NoteController(),
+      child: MaterialApp(title: 'Note App', home: NotesPage()),
     );
   }
 }
