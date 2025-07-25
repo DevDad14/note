@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:noteapp/models/note.dart';
+import 'package:noteapp/models/post.dart';
+import 'package:noteapp/services/home_service.dart';
 
 class NoteController with ChangeNotifier {
-  List<Note> notes = [];
+  List<Post> posts = [];
 
-  void addNote(Note note) {
-    notes.add(note);
-    notifyListeners();
-  }
-
-  void deleteNote(int index) {
-    notes.removeAt(index);
-    notifyListeners();
-  }
-
-  void updateNote(Note note, int index) {
-    notes[index].title = note.title;
-    notes[index].subscription = note.subscription;
-    notifyListeners();
+  Future<void> getPosts() async {
+    try {
+      final response = await HomeService.getPosts();
+      posts = response;
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
   }
 }

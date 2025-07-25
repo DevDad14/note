@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:noteapp/controller/note_controller.dart';
+import 'package:noteapp/pages/home_page.dart';
 import 'package:provider/provider.dart';
-import 'pages/notes_page.dart'; // import your page
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => NoteController(),
-      child: MaterialApp(title: 'Note App', home: NotesPage()),
+      child: MaterialApp(home: HomePage()),
     );
   }
 }
