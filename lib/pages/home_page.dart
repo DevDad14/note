@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:noteapp/controller/note_controller.dart';
+import 'package:noteapp/pages/login_page.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,8 +12,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late NoteController noteController;
-  TextEditingController titleController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordTwoController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -29,16 +32,28 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextField(controller: titleController),
-                TextField(controller: descriptionController),
+                TextField(controller: usernameController),
+                TextField(controller: passwordController),
+                TextField(controller: passwordTwoController),
                 ElevatedButton(
-                  onPressed: () {
-                    noteController.addTodo(
-                      titleController.text,
-                      descriptionController.text,
+                  onPressed: () async {
+                    if (passwordController.text != passwordTwoController.text) {
+                      return;
+                    }
+
+                    final bool isSuccess = await noteController.registerUser(
+                      usernameController.text,
+                      passwordController.text,
                     );
+
+                    if (isSuccess) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                      );
+                    }
                   },
-                  child: Text('Add Note'),
+                  child: Text('đăng ký'),
                 ),
               ],
             ),

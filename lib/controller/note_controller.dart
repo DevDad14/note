@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:noteapp/models/post.dart';
 import 'package:noteapp/models/todo.dart';
+import 'package:noteapp/models/user.dart';
 import 'package:noteapp/services/home_service.dart';
 
 class NoteController with ChangeNotifier {
+  List<User> users = [];
   List<Post> posts = [];
 
   Todo? todo;
@@ -18,10 +20,11 @@ class NoteController with ChangeNotifier {
     }
   }
 
-
   Future<void> addTodo(String title, String description) async {
     try {
-      final response = await HomeService.addTodo(Todo(title: title, description: description, completed: false));
+      final response = await HomeService.addTodo(
+        Todo(title: title, description: description, completed: false),
+      );
       todo = response;
       notifyListeners();
     } catch (e) {
@@ -29,7 +32,32 @@ class NoteController with ChangeNotifier {
     }
   }
 
+  Future<bool> registerUser(String username, String password) async {
+    bool isAdd = true;
 
+    for (var element in users) {
+      if (element.username == username) {
+        isAdd = false;
+      }
+    }
 
+    if (isAdd) {
+      users.add(User(username: username, password: password));
+      notifyListeners();
+    }
 
+    return isAdd;
+  }
+
+  Future<bool> loginUser(String username, String password) async {
+    bool isLogin = false;
+
+    for (var element in users) {
+      if (element.username == username && element.password == password) {
+        isLogin = true;
+      }
+    }
+
+    return isLogin;
+  }
 }
