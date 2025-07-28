@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:noteapp/models/post.dart';
+import 'package:noteapp/models/todo.dart';
 
 class HomeService {
   HomeService(_);
@@ -23,6 +24,17 @@ class HomeService {
     } catch (e) {
       print(e);
       throw Exception('Failed to load posts');
+    }
+  }
+
+  static Future<Todo> addTodo(Todo todo) async {
+    try {
+      final response = await _dio.post('/posts', data: todo.toJson());
+
+      return Todo.fromJson(response.data);
+    } catch (e) {
+      print(e);
+      throw Exception('Failed to add post');
     }
   }
 }

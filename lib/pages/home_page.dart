@@ -11,11 +11,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late NoteController noteController;
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   @override
   void initState() {
     super.initState();
     noteController = context.read();
-    noteController.getPosts();
   }
 
   @override
@@ -23,18 +24,24 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Consumer<NoteController>(
         builder: (context, controller, child) {
-          return ListView.separated(
-            itemBuilder:
-                (context, index) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(controller.posts[index].title),
-                    Text(controller.posts[index].body),
-                    Text(controller.posts[index].id.toString()),
-                  ],
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextField(controller: titleController),
+                TextField(controller: descriptionController),
+                ElevatedButton(
+                  onPressed: () {
+                    noteController.addTodo(
+                      titleController.text,
+                      descriptionController.text,
+                    );
+                  },
+                  child: Text('Add Note'),
                 ),
-            separatorBuilder: (context, index) => SizedBox(height: 10),
-            itemCount: controller.posts.length,
+              ],
+            ),
           );
         },
       ),
